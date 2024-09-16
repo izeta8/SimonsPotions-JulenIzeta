@@ -1,74 +1,102 @@
-body
-{
-  margin:0;
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
   display: flex;
-  place-items: center;
-  /* background-image: url('/background.png');
-  background-repeat: no-repeat; */
-  /* background-size: 100% 100%; */
-  /* background-position: center center; */
+  align-items: center;
+  justify-content: center;
+  background-image: url('/assets/background.png');
+  background-repeat: no-repeat; 
+  background-position: center center;
+  font-family: 'MedievalSharp', sans-serif;
+  color: #ea9a06;
+  
 }
 
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+} 
+
+/* -- HEADER -- */ 
+
+header h1
+{
   text-align: center;
+  position: relative;
+  top: 50px;
+
+  /* Add a border */
+  text-shadow:
+    -1px -1px 0 #996505,  
+     1px -1px 0 #996505,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
 }
 
-/* -- CONTAINERS -- */ 
+header button
+{ 
+  position: relative;
+  top: 20px;
+  margin: auto;
+  display: block;
+}
 
-.container
+.introHeader
 {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  top: 320px;
+}
+
+/* -- CONTAINER -- */ 
+
+.container {
+  gap: 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 600px;
-  height: 600px;
-  background-color: black;
+  height: 335px;
   padding: 30px;
-  border-radius: 320px;
-}
-
-.center-container
-{
   position: absolute;
-  border-radius: 300px;
-  background-color: black;
-  width: 600px;
-  height: 600px;
+  top: 85px;
+  left: calc(50% - 600px / 2);
 }
 
-/* -- PADS -- */ 
+/* -- POTIONS -- */ 
 
-.pad {
-  width: 250px;
-  margin: 25px;
-}
-
-.pad:hover {
+.potion {
+  margin: auto;
   cursor: pointer;
+  width: 160px;
+  filter:saturate(0.5);
+  user-select: none;
+  transition: opacity .2s ease-in-out;
+  opacity: 0; /* Initially hidden */
 }
 
-.pad-0 {
-  border-top-left-radius: 300px;
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+.yellow 
+{
+  transform: scale(0.85);
 }
 
-.pad-1 {
-  border-top-right-radius: 300px;
-  border-top-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+/* Smooth fade-in animation for potions  */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.pad-2 {
-  border-bottom-left-radius: 300px;
-  border-top-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.pad-3 {
-  border-bottom-right-radius: 300px;
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+/* Class to activate the fadeIn animation */
+.potion.fade-in {
+  animation: fadeIn 1s forwards;
 }

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import useSound from 'use-sound';
 import simon from './assets/sounds/sprite.mp3'
+import './fonts/fonts.css';
+
 import './App.css'
 
 function App() {
@@ -21,9 +23,15 @@ function App() {
   });
 
   const initGame = () => {
-    randomNumber();
-    setIsGameOn(true);
-  }
+
+    // 'isGameOn = true' starts the potions fade-in animation.
+    setIsGameOn(true); 
+
+    // Waits until the fade-in animation ends and gives the user little time to get prepared.
+    setTimeout(() => {
+      randomNumber();
+    }, 1500); 
+  };
 
   const randomNumber = () => {
     setIsAllowedToPlay(false);
@@ -36,36 +44,45 @@ function App() {
     if (isAllowedToPlay) {
       setIsAllowedToPlay(false); // Prevent further clicks
       play({ id: colors[index].sound });
-      colors[index].ref.current.style.opacity = 1;
-      colors[index].ref.current.style.scale = 0.9;
+      showTargetPotion(index);
       setTimeout(() => {
-        colors[index].ref.current.style.opacity = 0.5;
-        colors[index].ref.current.style.scale = 1;
+        hideTargetPotion(index);
         setCurrentGame([...currentGame, index]);
         setPulses(pulses + 1);
         setIsAllowedToPlay(true); // Re-allow clicks after animation
       }, speed / 2);
     }
-  };
+  }; 
 
+  const showTargetPotion = (index) => 
+  {
+    console.log(index)
+    colors[index].ref.current.style.filter = 'saturate(1.2)';
+  }
+
+  const hideTargetPotion = (index) => 
+  {
+    colors[index].ref.current.style.filter = 'saturate(0.5)';
+  }
+  
   const colors = [
     {
-      color: '#FAF303',
+      color: 'yellow',
       ref: yellowRef,
       sound: 'one'
     },
     {
-      color: '#030AFA',
+      color: 'blue',
       ref: blueRef,
       sound: 'two'
     },
     {
-      color: '#FA0E03',
+      color: 'red',
       ref: redRef,
       sound: 'three'
     },
     {
-      color: '#0AFA03',
+      color: 'green',
       ref: greenRef,
       sound: 'four'
     }
@@ -73,7 +90,7 @@ function App() {
 
   const minNumber = 0;
   const maxNumber = 3;
-  const speedGame = 400;
+  const speedGame = 600;
 
   const [sequence, setSequence] = useState([]);
   const [currentGame, setCurrentGame] = useState([]);
@@ -83,7 +100,6 @@ function App() {
   const [pulses, setPulses] = useState(0);
   const [success, setSuccess] = useState(0);
   const [isGameOn, setIsGameOn] = useState(false);
-
 
   useEffect(() => {
     if (pulses > 0) {
@@ -102,6 +118,7 @@ function App() {
     }
   }, [pulses]);
 
+
   useEffect(() => {
     if (!isGameOn)
     {
@@ -114,6 +131,7 @@ function App() {
       setTurn(0);
     }
   }, [isGameOn]);
+
 
   useEffect(() => {
     if (success === sequence.length && success > 0)
@@ -128,14 +146,15 @@ function App() {
     }
   }, [success]);
 
+
   useEffect(() => {
     if (!isAllowedToPlay) {
       sequence.map((item, index) => {
         setTimeout(() => {
           play({ id: colors[item].sound });
-          colors[item].ref.current.style.opacity = 1;
+          showTargetPotion(item);
           setTimeout(() => {
-            colors[item].ref.current.style.opacity = 0.5;
+            hideTargetPotion(item);
           }, speed / 2);
         }, speed * index);
       });
@@ -143,26 +162,22 @@ function App() {
     setIsAllowedToPlay(true);
   }, [sequence]);
   
-  useEffect(() => {
-    console.log(isAllowedToPlay);
-  }, [isAllowedToPlay])
-
   return (
     <>
       {isGameOn
       ? (
         <>
-          <div className='header'>
+          <header>
             <h1>Turn {turn}</h1>
-          </div>
+          </header>
           <div className='container'>
             {colors.map((item, index) => {
               return (
-                <div
+                <img
+                  src={`/assets/potions/${item.color}-potion.png`}
                   key={index}
                   ref={item.ref}
-                  className={`pad pad-${index}`}
-                  style={{backgroundColor: `${item.color}`, opacity:0.6}}
+                  className={`potion ${item.color} ${isGameOn ? 'fade-in' : ''}`}
                   onClick={() => handleClick(index)}
                 />
               )
@@ -172,10 +187,11 @@ function App() {
       )
       : (
         <>
-          <div className='header'>
-            <h1>SUPER SIMON</h1>
-          </div>
-          <button onClick={initGame}>START</button>
+          <header className="introHeader">
+            <h1>SIMON'S POTIONS</h1>
+            <button onClick={initGame}>START</button>
+
+          </header>
         </>
       )}
     </>
