@@ -1,0 +1,3 @@
+- Add particles to potions
+- Add a little jiggle to the potions when clicked
+- Add particles to the scene.
