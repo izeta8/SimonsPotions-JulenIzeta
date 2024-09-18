@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import useSound from 'use-sound';
-import simon from './assets/sounds/sprite.mp3'
+import potions_sound from './assets/sounds/potions_sound.wav'
 import './fonts/fonts.css';
 
 import './App.css'
@@ -11,15 +11,29 @@ function App() {
   const yellowRef = useRef(null);
   const greenRef  = useRef(null);
   const redRef    = useRef(null);
+  
+  const minNumber = 0;
+  const maxNumber = 3;
+  const speedGame = 600;
+  
+  const [sequence, setSequence] = useState([]);
+  const [currentGame, setCurrentGame] = useState([]);
+  const [isAllowedToPlay, setIsAllowedToPlay] = useState(false);
+  const [speed, setSpeed] = useState(speedGame);
+  const [turn, setTurn] = useState(0);
+  const [pulses, setPulses] = useState(0);
+  const [success, setSuccess] = useState(0);
+  const [isGameOn, setIsGameOn] = useState(false);
 
-  const [play] = useSound(simon, {
+  const [play] = useSound(potions_sound, {
     sprite: {
-      one:   [0,    500],
-      two:   [1000, 500],
-      three: [2000, 500],
-      four:  [3000, 500],
-      error: [4000, 1000],
-    }
+      one:   [0,    1000],
+      two:   [2000, 1000],
+      three: [4000, 1000],
+      four:  [6000, 1000],
+      error: [8000, 1000],
+    },
+    interrupt: true
   });
 
   const initGame = () => {
@@ -31,6 +45,7 @@ function App() {
     setTimeout(() => {
       randomNumber();
     }, 1500); 
+    
   };
 
   const randomNumber = () => {
@@ -56,50 +71,40 @@ function App() {
 
   const showTargetPotion = (index) => 
   {
-    console.log(index)
-    colors[index].ref.current.style.filter = 'saturate(1.2)';
+    colors[index].ref.current.style.filter = `saturate(1.5) drop-shadow(0px 7px 1px rgb(0,0,0,.5)) drop-shadow(0px 0px 30px ${colors[index].dropShadowHex})`;
   }
 
   const hideTargetPotion = (index) => 
   {
-    colors[index].ref.current.style.filter = 'saturate(0.5)';
+    colors[index].ref.current.style.filter = 'saturate(0.3) drop-shadow(0px 7px 1px rgb(0,0,0,.5))';
   }
   
   const colors = [
-    {
-      color: 'yellow',
-      ref: yellowRef,
-      sound: 'one'
-    },
-    {
-      color: 'blue',
-      ref: blueRef,
-      sound: 'two'
-    },
-    {
-      color: 'red',
-      ref: redRef,
-      sound: 'three'
-    },
-    {
-      color: 'green',
-      ref: greenRef,
-      sound: 'four'
-    }
-  ];
-
-  const minNumber = 0;
-  const maxNumber = 3;
-  const speedGame = 600;
-
-  const [sequence, setSequence] = useState([]);
-  const [currentGame, setCurrentGame] = useState([]);
-  const [isAllowedToPlay, setIsAllowedToPlay] = useState(false);
-  const [speed, setSpeed] = useState(speedGame);
-  const [turn, setTurn] = useState(0);
-  const [pulses, setPulses] = useState(0);
-  const [success, setSuccess] = useState(0);
-  const [isGameOn, setIsGameOn] = useState(false);
+  {
+    dropShadowHex: "#e6a902",
+    color: 'yellow',
+    ref: yellowRef,
+    sound: 'one'
+  },
+  {
+    dropShadowHex: "#022fab",
+    color: 'blue',
+    ref: blueRef,
+    sound: 'two'
+  },
+  {
+    dropShadowHex: "#8c032e",
+    color: 'red',
+    ref: redRef,
+    sound: 'three'
+  },
+  {
+    dropShadowHex: "#059c41",
+    color: 'green',
+    ref: greenRef,
+    sound: 'four'
+  }
+];
 
   useEffect(() => {
     if (pulses > 0) {
@@ -174,6 +179,7 @@ function App() {
             {colors.map((item, index) => {
               return (
                 <img
+                  draggable="false"
                   src={`/assets/potions/${item.color}-potion.png`}
                   key={index}
                   ref={item.ref}
