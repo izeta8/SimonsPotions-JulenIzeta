@@ -80,30 +80,10 @@ function App() {
   }
   
   const colors = [
-  {
-    dropShadowHex: "#e6a902",
-    color: 'yellow',
-    ref: yellowRef,
-    sound: 'one'
-  },
-  {
-    dropShadowHex: "#022fab",
-    color: 'blue',
-    ref: blueRef,
-    sound: 'two'
-  },
-  {
-    dropShadowHex: "#8c032e",
-    color: 'red',
-    ref: redRef,
-    sound: 'three'
-  },
-  {
-    dropShadowHex: "#059c41",
-    color: 'green',
-    ref: greenRef,
-    sound: 'four'
-  }
+    { dropShadowHex: "#e6a902", color: 'yellow', ref: yellowRef, sound: 'one' },
+    { dropShadowHex: "#022fab", color: 'blue', ref: blueRef, sound: 'two' },
+    { dropShadowHex: "#8c032e", color: 'red', ref: redRef, sound: 'three' },
+    { dropShadowHex: "#059c41", color: 'green', ref: greenRef, sound: 'four' }
   ];
 
   useEffect(() => {
@@ -171,9 +151,7 @@ function App() {
   useEffect(() => {
     colors.forEach(item => {
       const img = new Image();
-      img.src = `/assets/potions/${item.color}-potion.png`;
-      img.onload = () => console.log(`${item.color} potion precargada`);
-      img.onerror = () => console.error(`Error al precargar ${item.color} potion`);
+      img.src = `/assets/potions/${item.color}-potion.webp`;
     });
   }, [colors]);
   
@@ -204,6 +182,7 @@ function App() {
       : (
         <>
           <header className="introHeader">
+            <img src="/logo.png" alt="Simon's Potions Logo" />
             <h1>SIMON'S POTIONS</h1>
             <button onClick={initGame}>START</button>
 

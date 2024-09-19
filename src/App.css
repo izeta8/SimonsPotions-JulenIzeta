@@ -49,10 +49,21 @@ header button
   display: block;
 }
 
-.introHeader
-{
+
+.introHeader {
+  display: flex;
   position: relative;
-  top: 320px;
+  top: 95px;
+  flex-direction: column;
+}
+
+.introHeader img
+{
+  margin: auto;
+  display: block;
+  width: 250px;
+  filter: drop-shadow(0px 8px 1px black)
+
 }
 
 /* -- CONTAINER -- */ 
