@@ -32,8 +32,7 @@ function App() {
       three: [4000, 1000],
       four:  [6000, 1000],
       error: [8000, 1000],
-    },
-    interrupt: true
+    }
   });
 
   const initGame = () => {
@@ -133,8 +132,21 @@ function App() {
 
 
   useEffect(() => {
-    if (!isAllowedToPlay) {
-      sequence.map((item, index) => {
+    if (sequence.length > 0) {
+
+      // Change cursor to 'not-allowed' to indicate the user that potions can not be clicked while secuence is going on.
+      document.body.style.cursor = "not-allowed";
+
+      const potions = document.querySelectorAll(".potion");
+      potions.forEach(potion =>  {
+        potion.style.cursor = "not-allowed";
+      })
+
+      // Disable the clicks on potions while showing the secuence
+      setIsAllowedToPlay(false);
+  
+      // Show the secuence to the user
+      sequence.forEach((item, index) => {
         setTimeout(() => {
           play({ id: colors[item].sound });
           showTargetPotion(item);
@@ -143,11 +155,30 @@ function App() {
           }, speed / 2);
         }, speed * index);
       });
+  
+      // Calculate the secuence duration to allow the user click on potions again.
+      const totalTime = speed * sequence.length;
+  
+      // Enable the clicks on potion when finished the secuence.
+      const timeout = setTimeout(() => {
+        setIsAllowedToPlay(true);
+        
+        // Change to cursor
+        document.body.style.cursor = "default";
+
+        const potions = document.querySelectorAll(".potion");
+        potions.forEach(potion =>  {
+          potion.style.cursor = "pointer";
+        })
+
+      }, totalTime);
+  
+      // Clears the timeout if the component unmounts or the sequence changes
+      return () => clearTimeout(timeout);
     }
-    setIsAllowedToPlay(true);
   }, [sequence]);
 
-  // Preload images to have them laoded on chache.
+  // Preload images to have them laoded on chache to avoid slow loading when showing the first time.
   useEffect(() => {
     colors.forEach(item => {
       const img = new Image();

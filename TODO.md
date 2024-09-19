@@ -1,1 +1,0 @@
-- When the PC is making the secuence, do not let the user to click any potion

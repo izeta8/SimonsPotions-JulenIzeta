@@ -104,7 +104,6 @@ header button
 
 .potion {
   margin: auto;
-  cursor: pointer;
   width: 160px;
   filter: saturate(0.3) drop-shadow(0px 7px 1px rgb(0,0,0,.5));
   user-select: none;
