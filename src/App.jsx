@@ -104,7 +104,7 @@ function App() {
     ref: greenRef,
     sound: 'four'
   }
-];
+  ];
 
   useEffect(() => {
     if (pulses > 0) {
@@ -166,6 +166,16 @@ function App() {
     }
     setIsAllowedToPlay(true);
   }, [sequence]);
+
+  // Preload images to have them laoded on chache.
+  useEffect(() => {
+    colors.forEach(item => {
+      const img = new Image();
+      img.src = `/assets/potions/${item.color}-potion.png`;
+      img.onload = () => console.log(`${item.color} potion precargada`);
+      img.onerror = () => console.error(`Error al precargar ${item.color} potion`);
+    });
+  }, [colors]);
   
   return (
     <>
@@ -180,7 +190,7 @@ function App() {
               return (
                 <img
                   draggable="false"
-                  src={`/assets/potions/${item.color}-potion.png`}
+                  src={`/assets/potions/${item.color}-potion.webp`}
                   key={index}
                   ref={item.ref}
                   className={`potion ${item.color} ${isGameOn ? 'fade-in' : ''}`}
