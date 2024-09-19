@@ -154,7 +154,7 @@ function App() {
       img.src = `/assets/potions/${item.color}-potion.webp`;
     });
   }, [colors]);
-  
+
   return (
     <>
       {isGameOn
@@ -181,6 +181,9 @@ function App() {
       )
       : (
         <>
+          <div className='info'>
+            <p>This game is intended to be played without zoom. For a better user experience, please keep your browser's zoom level at 100%.</p>
+          </div>
           <header className="introHeader">
             <img src="/logo.png" alt="Simon's Potions Logo" />
             <h1>SIMON'S POTIONS</h1>
